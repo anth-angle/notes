@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>note_01</title>
+</head>
+<body>
+    <script>
+        // 类的方式实现调用 
+        var CheckObejct = function () {
+            this.checkName = function () {
+                console.log('checkName')
+            }
+            this.checkEmail = function () {
+                console.log('checkEmail')
+            }
+            this.checkPassword = function () {
+                console.log('checkPassword')
+            }
+        }
+        var checker = new CheckObejct()
+        checker.checkEmail()
+        checker.checkName()
+        checker.checkPassword()
+
+        // 链式调用
+        var Checker = function () {
+            this.checkName = function () {
+                console.log('checkName')
+                return this
+            }
+            this.checkEmail = function () {
+                console.log('checkEmail')
+                return this
+            }
+            this.checkPassword = function () {
+                console.log('checkPassword')
+                return this
+            }
+        }
+        var checker = new Checker()
+        checker.checkEmail().checkName().checkPassword()
+        console.log(checker);
+
+        // 公共方法 原型调用
+        var Checkit = function () {
+            Checkit.prototype.checkName = function () {
+                console.log('checkName')
+                return this
+            }
+            Checkit.prototype.checkEmail = function () {
+                console.log('checkEmail')
+                return this
+            }
+            Checkit.prototype.checkPassword = function () {
+                console.log('checkPassword')
+                return this
+            }
+        }
+        var checkit = new Checkit()
+        checkit.checkEmail().checkName().checkPassword()
+        console.log(checkit)
+
+        // Function
+        // Function.prototype.checkName = function () {
+        //     console.log('check now');
+        // }
+        // var func = new Function()
+        // func.checkName()
+        
+        Function.prototype.addMethods = function (name, fn) { 
+            this[name] = fn
+            return this
+        }
+        var methods = new Function()
+        methods.addMethods('checkEmail', function () {
+            console.log('check email')
+            return this
+        }).addMethods('checkName', function () { 
+            console.log('check name') 
+            return this 
+        })
+        methods.checkName().checkEmail()
+    </script>
+</body>
+</html>

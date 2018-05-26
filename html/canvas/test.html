@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: #272822;
+        }
+        canvas {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        let canvas = document.getElementById('canvas');
+        let WIDTH = '200';
+        let HEIGHT = '25';
+
+        canvas.width = WIDTH;
+        canvas.height = HEIGHT;
+
+        let ctx = canvas.getContext("2d");
+        
+        /**
+        * 进度条
+        */
+        function ProgressBar() {
+            this.width = 0;
+            this.chroma = 0;
+
+            this.draw = function () {
+                // 1. 初始状态
+                ctx.fillStyle = `hsla(${this.chroma}, 100%, 40%, 1)`;
+                ctx.fillRect(0, 0, this.width, 25);
+            }
+        };
+        /**
+        * 粒子
+        */
+        function Rarticle() {
+
+        };
+
+        let progress = new ProgressBar();
+        let timer;
+
+        clearInterval(timer);
+        timer = setInterval(() => {
+            console.log(progress);
+            progress.width += 2;
+            pargress.chroma += 0.8;
+            if (width > WIDTH) {
+                clearInterval(timer);
+                return;
+            }
+            progress.draw();
+        }, 1000 / 60);
+    </script>
+</body>
+</html>

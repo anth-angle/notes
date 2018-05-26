@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>note_02</title>
+</head>
+<body>
+    <script>
+        // 创建一个Book类，这个Book类可以展示id、价格、书名
+        // var Book = function (id, price, name) {
+        //     this.id = id
+        //     this.price = price
+        //     this.name = name
+        //     this.display = function () {
+        //         console.log('id:' + this.id + ' price:' + this.price + ' name:' + this.name)
+        //     }
+        // }
+        // var book1 = new Book(1, 36, '你不知道的Javascript')
+        // var book2 = new Book(2, 50, 'Python编程大全')
+        // book1.display()
+        // book2.display()
+        // console.log(book1) // 打印 display : ƒ () id : 1 name : "你不知道的Javascript" price : 36
+        // console.log(book2) // 打印 display : ƒ () id : 2 name : "Python编程大全" price : 50
+    </script>
+    <script>
+        var Book = function (id, price, name) {
+            this.id = id
+            this.price = price
+            this.name = name
+            Book.prototype.display = function () {
+                console.log('id:' + this.id + ' price:' + this.price + ' name:' + this.name)
+            }
+        }
+        var book1 = new Book(1, 36, '你不知道的Javascript')
+        var book2 = new Book(2, 50, 'Python编程大全')
+        book1.display()
+        book2.display() 
+        console.log(book1)
+        console.log(book2)
+
+        var Person = function () {
+            // 私有变量_id
+            var _id=  '007'
+            // 私有方法_showName
+            var _showName = function () {
+                console.log('邦德')
+            }
+            // 通过this添加showId方法
+            this.showId = function (){
+                console.log(_id)
+            }
+            // 通过this添加showName方法
+            this.showName = function () {
+                _showName()
+            }
+            // 通过this添加id
+            this.id = '008'
+            //在创建对象时执行
+            this.showName()
+        }
+        person = new Person() // 打印邦德
+        person.showId() // 成功访问到私有变量_id 007
+        person.showName() // 成功访问到私有方法_showName
+    </script>
+    <!-- <script>
+        var Person = function () {
+            console.log('create person');
+        }
+
+        Person.isMan = true
+        Person.callName = function () {
+            console.log('i am jjk')
+        }
+        var person = new Person()
+        person.isMan 
+        person.callName() 
+    </script> -->
+    <script>
+        // 创建父类
+        var Super = function () {
+            this.isBook = true
+            this.callName = function () {
+                console.log('i am a book')
+            }
+        }
+        Super.name = 'js'
+        // 创建子类
+        var Sub = function () {
+            console.log('i am child')
+        }
+        // 类式继承
+        Sub.prototype = new Super();
+        // 实例化
+        var instance = new Sub();
+        console.log(instance.isBook)
+        console.log(instance.callName())
+        console.log(instance.name)
+    </script>
+    <script>
+        // 声明父类
+        var Super = function (id) {
+            this.books = ['css', 'javascript', 'html'];
+            this.id = id;
+        }
+        // 添加公有方法
+        Super.prototype.showBooks = function () {
+            console.log(this.books);
+        }
+        // 声明子类
+        var Sub = function (id) {
+            Super.call(this, id); // call方法：子类的变量id在父类中执行了一遍
+        }
+        // 创建实例
+        var instance1 = new Sub(10);
+        var instance2 = new Sub(11);
+        instance1.books.push('node');
+        console.log(instance1.books); // ['css', 'javascript', 'html', 'node']
+        console.log(instance1.id); // 10
+        console.log(instance2.books);  // ['css', 'javascript', 'html']
+        console.log(instance2.id); 11
+
+        instance1.showBooks(); // TypeError
+    </script>
+</body>
+</html>

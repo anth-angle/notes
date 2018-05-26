@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>demo1</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: #272822;
+        }
+
+        canvas {
+        position: absolute;
+        top: calc(50% - 50px);
+        top: -webkit-calc(50% - 100px);
+        left: calc(50% - 200px);
+        left: -webkit-calc(50% - 200px);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        particle_no = 25;
+        
+        window.requestAnimFrame = (function() {
+        return window.requestAnimationFrame ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            window.oRequestAnimationFrame ||
+            window.msRequestAnimationFrame ||
+            function(callback) {
+            window.setTimeout(callback, 1000 / 60);
+            };
+        })();
+        
+        // 获取canvas上下文对象和设置大小
+        var canvas = document.getElementsByTagName("canvas")[0];
+        var ctx = canvas.getContext("2d");
+        var w = 400,
+        h = 200;
+        canvas.width = w;
+        canvas.height = h;
+        
+        // 定义最初状态
+        var counter = 0; // 
+        var particles = []; // 粒子数量为0
+
+        /**
+        * 重置
+        */
+        function reset() {
+            // 确保progress跑完
+            ctx.fillStyle = "#272822";
+            ctx.fillRect(0, 0, w, h);
+            // 重新设置progress的初始状态
+            ctx.fillStyle = "#171814";
+            ctx.fillRect(25, 80, 350, 25);
+        }
+        /**
+        * 
+        */
+        function progressbar() {
+            this.widths = 0;
+            this.hue = 0; // 色度
+
+            this.draw = function() {
+                ctx.fillStyle = 'hsla(' + this.hue + ', 100%, 40%, 1)'; // 设置填充样式
+                ctx.fillRect(25, 80, this.widths, 25); // 创建填充矩形
+                var grad = ctx.createLinearGradient(0, 0, 0, 130); // 获取渐变对象 （由左到右渐变）
+                grad.addColorStop(0, "transparent");  // transparent 透明的
+                grad.addColorStop(1, "rgba(0,0,0,0.5)");
+                ctx.fillStyle = grad;
+                ctx.fillRect(25, 80, this.widths, 25);
+            }
+        }
+        /**
+        * 粒子效果
+        */
+        function particle() {
+            this.x = 23 + bar.widths; // 获取到粒子的初始位置x（跟progress是动态变化的）
+            this.y = 82; // 设置粒子的初始位置y
+
+            this.vx = 0.8 + Math.random() * 1; // 随机设置水平方向的速度
+            this.v = Math.random() * 5;
+            this.g = 1 + Math.random() * 3;
+            this.down = false;
+
+            this.draw = function() {
+                 // 填充样式（跟progress的颜色相关）
+                ctx.fillStyle = 'hsla(' + (bar.hue + 0.3) + ', 100%, 40%, 1)';
+                // 随机设置粒子大小
+                var size = Math.random() * 2; 
+                ctx.fillRect(this.x, this.y, size, size);
+            }
+        }
+
+        bar = new progressbar();
+        /**
+        * 绘图
+        */
+        function draw() {
+            reset();
+            counter++;
+
+            bar.hue += 0.8;
+
+            bar.widths += 2;
+            if (bar.widths > 350) {
+                // 处理结束位置的粒子效果
+                if (counter > 215) {
+                    reset();
+                    bar.hue = 0;
+                    bar.widths = 0;
+                    counter = 0;
+                    particles = [];
+                } else {
+                    bar.hue = 126;
+                    bar.widths = 351;
+                    bar.draw();
+                }
+            } else {
+                bar.draw();
+                for (var i = 0; i < particle_no; i += 10) {
+                particles.push(new particle());
+                }
+            }
+            update();
+        }
+        /**
+        * 实时更新
+        */
+        function update() {
+            for (var i = 0; i < particles.length; i++) {
+                var p = particles[i];
+                p.x -= p.vx;
+                if (p.down == true) {
+                p.g += 0.1;
+                p.y += p.g;
+                } else {
+                if (p.g < 0) {
+                    p.down = true;
+                    p.g += 0.1;
+                    p.y += p.g;
+                } else {
+                    p.y -= p.g;
+                    p.g -= 0.1;
+                }
+                }
+                p.draw();
+            }
+        }
+
+        function animloop() {
+            draw();
+            requestAnimFrame(animloop);
+        }
+        
+        animloop();
+        // draw();
+    </script>
+</body>
+</html>
