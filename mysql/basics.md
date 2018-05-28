@@ -56,7 +56,8 @@ mysql> create table students
     -> );
 Query OK, 0 rows affected (0.05 sec)
 ```
-以下是关于列声明的解释：
+以下是关于列声明的解释：  
+
 |列声明语句|解释说明|
 |-|-|
 |`id char(10) not null primary key`|创建一列，名称为`id`；数据类型为char字符类型，字符的最大长度为10个字符；并且该列内容不允许为空；同时把这一列作为这张表的主键，用来区分表中不同行。|
